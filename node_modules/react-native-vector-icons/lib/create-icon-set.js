@@ -41,7 +41,6 @@ export default function createIconSet(
 
   class Icon extends PureComponent {
     static propTypes = {
-      allowFontScaling: PropTypes.bool,
       name: IconNamePropType,
       size: PropTypes.number,
       color: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
@@ -54,20 +53,19 @@ export default function createIconSet(
       allowFontScaling: false,
     };
 
-    root = null;
-
     setNativeProps(nativeProps) {
       if (this.root) {
         this.root.setNativeProps(nativeProps);
       }
     }
 
+    root = null;
     handleRef = ref => {
       this.root = ref;
     };
 
     render() {
-      const { name, size, color, style, children, ...props } = this.props;
+      const { name, size, color, style, ...props } = this.props;
 
       let glyph = name ? glyphMap[name] || '?' : '';
       if (typeof glyph === 'number') {
@@ -91,7 +89,7 @@ export default function createIconSet(
       return (
         <Text {...props}>
           {glyph}
-          {children}
+          {this.props.children}
         </Text>
       );
     }

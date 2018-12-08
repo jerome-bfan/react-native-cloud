@@ -8,7 +8,7 @@ import createIconSet, {
   DEFAULT_ICON_COLOR,
   DEFAULT_ICON_SIZE,
   NativeIconAPI,
-} from './create-icon-set';
+} from '../lib/create-icon-set';
 
 import ensureNativeModuleAvailable from './ensure-native-module-available';
 
@@ -19,7 +19,15 @@ export const FA5Style = {
   brand: 3,
 };
 
+let shouldSetupFA5 = true;
+
 export function createFA5iconSet(glyphMap, metadata = {}, proVersion = false) {
+  if (Platform.OS === 'ios' && shouldSetupFA5) {
+    shouldSetupFA5 = false;
+    ensureNativeModuleAvailable();
+    NativeIconAPI.setupFontAwesome5();
+  }
+
   const familyName = `Font Awesome 5 ${proVersion ? 'Pro' : 'Free'}`;
   const metadataKeys = Object.keys(metadata);
 
@@ -114,8 +122,6 @@ export function createFA5iconSet(glyphMap, metadata = {}, proVersion = false) {
   function hasIconForStyle(glyph, style) {
     const family = styleToFamily(style);
 
-    if (metadataKeys.indexOf(family) === -1) return false;
-
     return metadata[family].indexOf(glyph) !== -1;
   }
 
@@ -131,10 +137,10 @@ export function createFA5iconSet(glyphMap, metadata = {}, proVersion = false) {
 
   function createFA5iconClass(baseClass, selectClass = iconSet => iconSet) {
     class FA5iconClass extends PureComponent {
-      static propTypes = {
+      static propTypes = Object.create(baseClass.propTypes, {
         light: PropTypes.bool,
         solid: PropTypes.bool,
-      };
+      });
 
       static defaultProps = {
         light: false,
@@ -144,9 +150,8 @@ export function createFA5iconSet(glyphMap, metadata = {}, proVersion = false) {
       render() {
         const selectedIconSet = getIconSetForProps(this.props);
         const SelectedIconClass = selectClass(selectedIconSet);
-        const { light, solid, ...restProps } = this.props;
 
-        return <SelectedIconClass {...restProps} />;
+        return <SelectedIconClass {...this.props} />;
       }
     }
 
@@ -178,8 +183,6 @@ export function createFA5iconSet(glyphMap, metadata = {}, proVersion = false) {
     color = DEFAULT_ICON_COLOR,
     type = FA5Style.regular
   ) {
-    ensureNativeModuleAvailable();
-
     let style = type;
     if (!hasIconForStyle(name, style)) {
       const fallbackFamily = fallbackForGlyph(name);

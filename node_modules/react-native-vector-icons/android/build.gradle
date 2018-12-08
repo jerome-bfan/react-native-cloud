@@ -1,11 +1,10 @@
 buildscript {
   repositories {
     jcenter()
-    google()
   }
 
   dependencies {
-    classpath 'com.android.tools.build:gradle:3.1.4'
+    classpath 'com.android.tools.build:gradle:2.3.+'
   }
 }
 
@@ -36,5 +35,5 @@ repositories {
 }
 
 dependencies {
-  implementation "com.facebook.react:react-native:${safeExtGet('reactNativeVersion', '+')}"
+  compile "com.facebook.react:react-native:${safeExtGet('reactNativeVersion', '+')}"
 }

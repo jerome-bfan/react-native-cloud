@@ -1,7 +1,6 @@
-import { Platform, NativeModules } from './react-native';
+import { Platform } from './react-native';
 
-const NativeIconAPI =
-  NativeModules.RNVectorIconsManager || NativeModules.RNVectorIconsModule;
+import { NativeIconAPI } from './create-icon-set';
 
 export default function ensureNativeModuleAvailable() {
   if (!NativeIconAPI) {

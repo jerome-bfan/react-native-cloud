@@ -1,10 +1,39 @@
 --- !com.amazonaws.mobilehub.v0.Project 
 apps:
   react-native: !com.amazonaws.mobilehub.v0.AppDO {}
+  web: !com.amazonaws.mobilehub.v0.AppDO {}
 features:
+  cloudlogic: !com.amazonaws.mobilehub.v0.CloudLogic 
+    attributes:
+      no-lock: true
+    components:
+      todolist: !com.amazonaws.mobilehub.v0.API 
+        attributes:
+          api-arn: 'arn:aws:execute-api:eu-west-1:937480555301:utj65gp237'
+          name: todolist
+          requires-signin: true
+          sdk-generation-stage-name: Prod
+        paths:
+          /: !com.amazonaws.mobilehub.v0.Function {}
+          /retrievethis: !com.amazonaws.mobilehub.v0.Function {}
+          /test: !com.amazonaws.mobilehub.v0.Function {}
+          /user: !com.amazonaws.mobilehub.v0.Function {}
+  content-delivery: !com.amazonaws.mobilehub.v0.ContentDelivery 
+    attributes:
+      enabled: true
+      visibility: public-global
+    components:
+      release: !com.amazonaws.mobilehub.v0.Bucket {}
   mobile-analytics: !com.amazonaws.mobilehub.v0.Pinpoint 
     components:
       analytics: !com.amazonaws.mobilehub.v0.PinpointAnalytics {}
-  sign-in: !com.amazonaws.mobilehub.v0.SignIn {}
-name: cloud-react-native
+  sign-in: !com.amazonaws.mobilehub.v0.SignIn 
+    attributes:
+      enabled: true
+      optional-sign-in: true
+    components:
+      sign-in-user-pools: !com.amazonaws.mobilehub.v0.UserPoolsIdentityProvider 
+        attributes:
+          user-pool-id: eu-west-1_T6YnwqOUq
+name: cloud-2
 region: eu-west-1

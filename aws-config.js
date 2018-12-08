@@ -6,14 +6,25 @@
 
 // AWS Mobile Hub Project Constants
 var aws_app_analytics = 'enable';
-var aws_cognito_identity_pool_id = 'eu-west-1:74e758a9-2101-4b57-85dd-8024036388d8';
+var aws_cloud_logic = 'enable';
+var aws_cloud_logic_custom = [{"id":"utj65gp237","name":"todolist","description":"","endpoint":"https://utj65gp237.execute-api.eu-west-1.amazonaws.com/Prod","region":"eu-west-1","paths":["/","/retrievethis","/test","/user"]}];
+var aws_cognito_identity_pool_id = 'eu-west-1:65e0d425-6c83-4627-9c37-fc6e09f4de91';
 var aws_cognito_region = 'eu-west-1';
-var aws_mobile_analytics_app_id = '96a49babbc234afca450ae1798355f45';
+var aws_content_delivery = 'enable';
+var aws_content_delivery_bucket = 'cloud-hosting-mobilehub-299021309';
+var aws_content_delivery_bucket_region = 'eu-west-1';
+var aws_content_delivery_cloudfront = 'enable';
+var aws_content_delivery_cloudfront_domain = 'd2sajr7t1k8x9x.cloudfront.net';
+var aws_mobile_analytics_app_id = 'e9822b66c75a48959e507af4d0daaf9f';
 var aws_mobile_analytics_app_region = 'us-east-1';
-var aws_project_id = 'eb278510-dafb-4737-b4f3-16ec567f1ea3';
-var aws_project_name = 'cloud-react-native';
+var aws_project_id = '0b818d58-232c-4a8b-9a31-6692853f5688';
+var aws_project_name = 'cloud-2';
 var aws_project_region = 'eu-west-1';
-var aws_resource_name_prefix = 'cloudreactnative-mobilehub-875735674';
+var aws_resource_name_prefix = 'cloud-mobilehub-299021309';
+var aws_sign_in_enabled = 'enable';
+var aws_user_pools = 'enable';
+var aws_user_pools_id = 'eu-west-1_T6YnwqOUq';
+var aws_user_pools_web_client_id = '75k5lrqkldh28ru87ngo7j7aue';
 
 AWS.config.region = aws_project_region;
 AWS.config.credentials = new AWS.CognitoIdentityCredentials({

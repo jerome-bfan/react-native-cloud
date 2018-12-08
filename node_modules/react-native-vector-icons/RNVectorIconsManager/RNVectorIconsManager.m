@@ -23,11 +23,6 @@
 #else // Compatibility for RN version < 0.40
 #import "RCTUtils.h"
 #endif
-#if __has_include(<React/RCTFont.h>)
-#import <React/RCTFont.h>
-#else // Compatibility for RN version < 0.40
-#import "RCTFont.h"
-#endif
 
 @implementation RNVectorIconsManager
 
@@ -116,26 +111,29 @@ RCT_EXPORT_METHOD(getImageForFontAwesome5:(NSString *)fontFamily
                   withColor:(UIColor *)color
                   callback:(RCTResponseSenderBlock)callback)
 {
-  NSString *fontWeight = @"400";
+  NSNumber *fontWeight = [NSNumber numberWithDouble:UIFontWeightRegular];
   if (style == 1)
-    fontWeight = @"100";
+    fontWeight = [NSNumber numberWithDouble:UIFontWeightUltraLight];
   else if (style == 2)
-    fontWeight = @"700";
-  
-  UIFont *font = [UIFont systemFontOfSize: 14];
-  font = [RCTFont updateFont:font
-                  withFamily:fontFamily
-                        size:[NSNumber numberWithDouble: fontSize]
-                      weight:fontWeight
-                       style:nil
-                     variant:nil
-             scaleMultiplier:1];
+    fontWeight = [NSNumber numberWithDouble:UIFontWeightBold];
   
   NSString *identifier = [NSString stringWithFormat:@"FA5.%ld", (long)style];
   NSString *filePath = [self generateFilePath:glyph withFontName:fontFamily
                                                     withFontSize:fontSize
                                                     withColor:color
                                                     withExtraIdentifier: identifier];
+  
+  UIFont *font = [UIFont fontWithName:fontFamily size:fontSize];
+  for (NSString *fontString in [UIFont fontNamesForFamilyName:fontFamily]) {
+    UIFont *testFont = [UIFont fontWithName:fontString size:fontSize];
+    NSDictionary *traits = [testFont.fontDescriptor objectForKey:UIFontDescriptorTraitsAttribute];
+    NSNumber *testFontWeight = traits[UIFontWeightTrait];
+    
+    if (testFontWeight.doubleValue == fontWeight.doubleValue) {
+      font = testFont;
+      break;
+    }
+  }
   
   BOOL success = [self createAndSaveGlyphImage:glyph withFont:font
                                                      withFilePath:filePath
@@ -176,6 +174,26 @@ RCT_EXPORT_METHOD(loadFontWithFileName:(NSString *)fontFileName
   }
   if (provider) {
     CFRelease(provider);
+  }
+}
+
+RCT_EXPORT_METHOD(setupFontAwesome5)
+{
+  for (NSString *family in [UIFont familyNames]) {
+    if ([family hasPrefix:@"Font Awesome 5"]) {
+      for (NSString *fontName in [UIFont fontNamesForFamilyName:family]) {
+        UIFont *font = [UIFont fontWithName:fontName size:12];
+        NSDictionary *traits = [font.fontDescriptor objectForKey:UIFontDescriptorTraitsAttribute];
+        
+        if ([fontName hasSuffix:@"Light"]) {
+          [traits setValue:[NSNumber numberWithDouble:UIFontWeightUltraLight] forKey:UIFontWeightTrait];
+        } else if ([fontName hasSuffix:@"Regular"]) {
+          [traits setValue:[NSNumber numberWithDouble:UIFontWeightRegular] forKey:UIFontWeightTrait];
+        } else if ([fontName hasSuffix:@"Solid"]) {
+          [traits setValue:[NSNumber numberWithDouble:UIFontWeightBold] forKey:UIFontWeightTrait];
+        }
+      }
+    }
   }
 }
 
