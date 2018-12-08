@@ -1,15 +1,26 @@
 {
-  "name": "react-native-cloud",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "name": "my-new-project",
+  "main": "node_modules/expo/AppEntry.js",
+  "private": true,
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "expo start",
+    "android": "expo start --android",
+    "ios": "expo start --ios",
+    "eject": "expo eject",
+    "test": "node ./node_modules/jest/bin/jest.js --watchAll"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "jest": {
+    "preset": "jest-expo"
+  },
   "dependencies": {
-    "aws-amplify": "^1.1.13"
+    "@expo/samples": "2.1.1",
+    "expo": "^31.0.2",
+    "react": "16.5.0",
+    "react-native": "https://github.com/expo/react-native/archive/sdk-31.0.0.tar.gz",
+    "react-navigation": "^2.18.2"
+  },
+  "devDependencies": {
+    "babel-preset-expo": "^5.0.0",
+    "jest-expo": "^31.0.0"
   }
 }
