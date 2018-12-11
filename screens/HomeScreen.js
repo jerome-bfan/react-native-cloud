@@ -5,6 +5,7 @@ import {
   ScrollView,
   StyleSheet,
   Text,
+  Button,
   TouchableOpacity,
   View,
 } from 'react-native';
@@ -12,16 +13,39 @@ import { WebBrowser } from 'expo';
 
 import { MonoText } from '../components/StyledText';
 
+import t from 'tcomb-form-native'; // 0.6.9
+
+const Form = t.form.Form;
+
+const User = t.struct({
+  email: t.String,
+  username: t.String,
+  password: t.String,
+  terms: t.Boolean
+});
+
+
 export default class HomeScreen extends React.Component {
   static navigationOptions = {
     header: null,
   };
 
   render() {
+
+    handleSubmit = () => {
+      const value = this._form.getValue(); // use that ref to get the form value
+      console.log('value: ', value);
+    }
+
     return (
       <View style={styles.container}>
         <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer}>
           <View style={styles.welcomeContainer}>
+          <Form type={User} />
+          <Button
+          title="Sign Up!"
+          onPress={this.handleSubmit}
+        />
             <Image
               source={
                 __DEV__

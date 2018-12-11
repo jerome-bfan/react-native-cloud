@@ -1,5 +1,6 @@
 const apigClientFactory = require('aws-api-gateway-client').default;
 import {AsyncStorage} from 'react-native';
+
 export  async function getCognito() {
     const cognito = {
         accessKeyId: await AsyncStorage.getItem("accessKeyId"),
@@ -29,6 +30,7 @@ export default instanceApi = async () => {
 
 
 export function getUser () {
+
     instanceApi().then(api => {
         api.invokeApi(null, 'user', 'GET')
             .then(function (result) {
